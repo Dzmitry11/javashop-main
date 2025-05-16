@@ -19,6 +19,8 @@ import se.systementor.supershoppen1.shop.services.ProductService;
 import se.systementor.supershoppen1.shop.services.ShopUserDetailsService;
 import se.systementor.supershoppen1.shop.services.SubscriberService;
 
+// test
+
 @Component
 public class SeedData implements CommandLineRunner {
     private final ProductService productService;
