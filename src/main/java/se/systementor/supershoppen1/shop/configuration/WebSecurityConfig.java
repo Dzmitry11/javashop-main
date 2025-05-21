@@ -45,20 +45,10 @@ public class WebSecurityConfig  {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-					.antMatchers("/", "/*", "/css/**", "/images/**", "/lib/**", "/scripts/**", "/static/**").permitAll()
-					.antMatchers("/admin/**").hasAnyRole("ADMIN")
-					.antMatchers("/user/**").hasAnyRole("USER")
-					.anyRequest().authenticated()
-                .and()
-                    .formLogin()
-                        .loginPage("/login")
-                        .permitAll()
-                        .defaultSuccessUrl("/")
-                        .and()
-                .logout()
-					.permitAll()
-                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                    .logoutSuccessUrl("/login");
+					.requestMatchers("/", "/*", "/css/**", "/images/**", "/lib/**", "/scripts/**", "/static/**").permitAll()
+					.requestMatchers("/admin/**").hasAnyRole("ADMIN")
+					.requestMatchers("/user/**").hasAnyRole("USER")
+					.anyRequest().authenticated();
 
 
         return http.build(); 
