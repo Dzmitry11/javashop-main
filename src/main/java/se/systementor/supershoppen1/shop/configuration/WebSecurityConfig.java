@@ -38,20 +38,29 @@ public class WebSecurityConfig  {
         //   .password(passwordEncoder.encode("stefan"))
         //   .roles("ADMIN");
     }
-    
+
 
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeRequests()
-					.requestMatchers("/", "/*", "/css/**", "/images/**", "/lib/**", "/scripts/**", "/static/**").permitAll()
-					.requestMatchers("/admin/**").hasAnyRole("ADMIN")
-					.requestMatchers("/user/**").hasAnyRole("USER")
-					.anyRequest().authenticated();
-
-
-        return http.build(); 
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/", "/*", "/css/**", "/images/**", "/lib/**", "/scripts/**", "/static/**").permitAll()
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/user/**").hasRole("USER")
+                        .anyRequest().authenticated()
+                )
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .permitAll()
+                        .defaultSuccessUrl("/")
+                )
+                .logout(logout -> logout
+                        .permitAll()
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                        .logoutSuccessUrl("/login")
+                );
+        return http.build();
     }
 
 
