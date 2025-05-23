@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -44,6 +43,22 @@ public class WebSecurityConfig  {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+
+                .authorizeHttpRequests(auth->auth
+					.requestMatchers("/", "/*", "/css/**", "/images/**", "/lib/**", "/scripts/**", "/static/**").permitAll()
+					.requestMatchers("/admin/**").hasAnyRole("ADMIN")
+					.requestMatchers("/user/**").hasAnyRole("USER")
+					.anyRequest().authenticated()
+)
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .permitAll()
+                        .defaultSuccessUrl("/", true)
+                )
+                .oauth2Login(oauth2 -> oauth2
+                        .loginPage("/login")// you can use the same login page if needed
+                        .defaultSuccessUrl("/", true)
+
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/*", "/css/**", "/images/**", "/lib/**", "/scripts/**", "/static/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
@@ -60,7 +75,12 @@ public class WebSecurityConfig  {
                         .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                         .logoutSuccessUrl("/login")
                 );
-        return http.build();
+
+
+
+        return http.build(); 
+        
+
     }
 
 
