@@ -58,18 +58,9 @@ public class WebSecurityConfig  {
                 .oauth2Login(oauth2 -> oauth2
                         .loginPage("/login")// you can use the same login page if needed
                         .defaultSuccessUrl("/", true)
+                )
 
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/*", "/css/**", "/images/**", "/lib/**", "/scripts/**", "/static/**").permitAll()
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/user/**").hasRole("USER")
-                        .anyRequest().authenticated()
-                )
-                .formLogin(form -> form
-                        .loginPage("/login")
-                        .permitAll()
-                        .defaultSuccessUrl("/")
-                )
+
                 .logout(logout -> logout
                         .permitAll()
                         .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
