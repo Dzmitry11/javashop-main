@@ -37,12 +37,13 @@ public class WebSecurityConfig  {
         //   .password(passwordEncoder.encode("stefan"))
         //   .roles("ADMIN");
     }
-    
+
 
 // filter chain
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+
                 .authorizeHttpRequests(auth->auth
 					.requestMatchers("/", "/*", "/css/**", "/images/**", "/lib/**", "/scripts/**", "/static/**").permitAll()
 					.requestMatchers("/admin/**").hasAnyRole("ADMIN")
@@ -57,6 +58,17 @@ public class WebSecurityConfig  {
                 .oauth2Login(oauth2 -> oauth2
                         .loginPage("/login")// you can use the same login page if needed
                         .defaultSuccessUrl("/", true)
+
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/", "/*", "/css/**", "/images/**", "/lib/**", "/scripts/**", "/static/**").permitAll()
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/user/**").hasRole("USER")
+                        .anyRequest().authenticated()
+                )
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .permitAll()
+                        .defaultSuccessUrl("/")
                 )
                 .logout(logout -> logout
                         .permitAll()
@@ -65,7 +77,10 @@ public class WebSecurityConfig  {
                 );
 
 
+
         return http.build(); 
+        
+
     }
 
 
