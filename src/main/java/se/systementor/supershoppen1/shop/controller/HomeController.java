@@ -45,7 +45,6 @@ public class HomeController {
 
         return "home";
     }
-
     /**
      * Integritetspolicysida – visas vid "/privacy"
      */
@@ -62,4 +61,3 @@ public class HomeController {
         return productService.getAll();
     }
 }
-
