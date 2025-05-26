@@ -45,6 +45,13 @@ public class HomeController {
 
         return "home";
     }
+    /**
+     * Integritetspolicysida – visas vid "/privacy"
+     */
+    @GetMapping("/privacy")
+    public String showPrivacyPolicy() {
+        return "privacy";
+    }
 
     /**
      * Testmetod för att returnera alla produkter (JSON)
