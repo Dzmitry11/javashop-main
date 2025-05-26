@@ -45,4 +45,12 @@ public class HomeController {
 
         return "home";
     }
+
+    /**
+     * Testmetod för att returnera alla produkter (JSON)
+     */
+    @GetMapping("/test2")
+    public List<Product> getAllProducts() {
+        return productService.getAll();
+    }
 }
